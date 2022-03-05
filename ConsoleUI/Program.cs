@@ -14,7 +14,7 @@ namespace ConsoleUI
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
 
-            carManager.Add(new Car() { Id=1,BrandId=1,ColorId=1,DailyPrice=1000,Description="car1",ModelYear=2022});
+            //carManager.Add(new Car() { Id=1,BrandId=1,ColorId=1,DailyPrice=1000,Description="car1",ModelYear=2022});
             //brandManager.Add(new Brand() {Id=1,Name="marka1" });
             //colorManager.Add(new Color() {Id=1,Name="renk1" });
 
@@ -36,7 +36,7 @@ namespace ConsoleUI
                 ColorId = 1,
                 DailyPrice = 1000,
                 ModelYear = 2022,
-                Description = "car111"
+                Description = "car1"
             });
             Console.WriteLine("GetById");
             Console.WriteLine(carManager.GetById(1).Description);
