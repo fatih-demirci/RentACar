@@ -43,6 +43,12 @@ namespace ConsoleUI
             Console.WriteLine(carManager.GetById(1).Description);
 
 
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine("{0} - {1} - {2} - {3}",car.BrandName,car.CarDescription,car.ColorName,car.DailyPrice);
+            }
+
+
 
             //var delete = carManager.GetById(1);
             //Console.WriteLine("Delete");
@@ -61,6 +67,14 @@ namespace ConsoleUI
             //    Description = "car5"
             //});
             //Console.WriteLine(carManager.GetById(5).Description);
+
+
+            foreach (var brand in brandManager.GetAll())
+            {
+                Console.WriteLine(brand.Name);
+            }
+
+            
 
 
         }
