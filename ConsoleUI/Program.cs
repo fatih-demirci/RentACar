@@ -30,16 +30,20 @@ namespace ConsoleUI
             Console.WriteLine(carManager.GetById(1).Description);
 
             Console.WriteLine("Update");
-            carManager.Update(new Car() {
+            carManager.Update(new Car()
+            {
                 Id = 1,
                 BrandId = 1,
                 ColorId = 1,
                 DailyPrice = 1000,
                 ModelYear = 2022,
-                Description = "car1"
+                Description = "car111"
             });
             Console.WriteLine("GetById");
             Console.WriteLine(carManager.GetById(1).Description);
+
+
+
             //var delete = carManager.GetById(1);
             //Console.WriteLine("Delete");
             //carManager.Delete(delete);
@@ -57,7 +61,7 @@ namespace ConsoleUI
             //    Description = "car5"
             //});
             //Console.WriteLine(carManager.GetById(5).Description);
-            
+
 
         }
     }
