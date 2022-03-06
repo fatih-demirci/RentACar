@@ -19,7 +19,7 @@ namespace ConsoleUI
             //colorManager.Add(new Color() {Id=1,Name="renk1" });
 
             Console.WriteLine("GetAll");
-            foreach (var car in carManager.GetCarsByColorId(1))
+            foreach (var car in carManager.GetCarsByColorId(1).Data)
             {
                 Console.WriteLine(car.Description);
             }
@@ -27,7 +27,7 @@ namespace ConsoleUI
             Console.WriteLine();
 
             Console.WriteLine("GetById");
-            Console.WriteLine(carManager.GetById(1).Description);
+            Console.WriteLine(carManager.GetById(1).Data.Description);
 
             Console.WriteLine("Update");
             carManager.Update(new Car()
@@ -37,13 +37,13 @@ namespace ConsoleUI
                 ColorId = 1,
                 DailyPrice = 1000,
                 ModelYear = 2022,
-                Description = "car111"
+                Description = "car1"
             });
             Console.WriteLine("GetById");
-            Console.WriteLine(carManager.GetById(1).Description);
+            Console.WriteLine(carManager.GetById(1).Data.Description);
 
 
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
                 Console.WriteLine("{0} - {1} - {2} - {3}",car.BrandName,car.CarDescription,car.ColorName,car.DailyPrice);
             }
@@ -69,7 +69,7 @@ namespace ConsoleUI
             //Console.WriteLine(carManager.GetById(5).Description);
 
 
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine(brand.Name);
             }
