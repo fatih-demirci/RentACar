@@ -24,6 +24,7 @@ namespace Business.Constants
         public static string ColorDeleted = "Renk silindi";
         public static string ColorsListed = "Renkler listelendi";
         public static string ColorGot = "Renk getirildi";
+        public static string CarNotExists = "Araba bulunamadı";
         public static string ColorUpdated = "Renk güncellendi";
         public static string UserAdded = "Kullanıcı eklendi";
         public static string UserDeleted = "Kullanıcı silindi";
@@ -41,5 +42,8 @@ namespace Business.Constants
         public static string RentalGot = "Kiralama getirildi";
         public static string RentalUpdated = "Kiralama bilgisi güncellendi";
         public static string RentalCarAlreadyRented = "Araç zaten kiralanmış";
+        public static string CarImagesLimitExceeded = "Araba resim limiti doldu";
+        public static string CarImageDeleted = "Araba resmi silindi";
+        public static string CarImageUpdated = "Araba resmi güncellendi";
     }
 }
