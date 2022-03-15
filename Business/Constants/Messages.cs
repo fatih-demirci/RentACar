@@ -54,5 +54,11 @@ namespace Business.Constants
         public static string AccessTokenCreated = "Token oluşturuldu";
         public static string AuthorizationDenied = "Yetki yok";
         public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string UserOperationClaimAdded = "Kullanıcı rolü eklendi";
+        public static string UserOperationClaimDeleted = "Kullanıcı rolü silindi";
+        public static string UserOperationClaimListed = "Kullanıcı rolleri listelendi";
+        public static string UserOperationClaimGot = "Kullanıcı rolü Id'ye göre getirildi";
+        public static string UserOperationClaimUpdated = "Kullanıcı rolü güncellendi";
+        
     }
 }
