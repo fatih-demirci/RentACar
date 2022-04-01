@@ -1,0 +1,17 @@
+<div class="list-group">
+  <a
+    routerLink=""
+    class="list-group-item list-group-item-action active"
+    aria-current="true"
+  >
+    Tüm Markalar
+  </a>
+  <a
+    routerLink="/cars/getcardetailsbybrandid/{{ brand.id }}"
+    *ngFor="let brand of brands"
+    class="list-group-item list-group-item-action active"
+    aria-current="true"
+  >
+    {{ brand.name }}
+  </a>
+</div>

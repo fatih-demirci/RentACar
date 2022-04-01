@@ -1,0 +1,17 @@
+<div class="list-group">
+  <a
+    routerLink=""
+    class="list-group-item list-group-item-action active"
+    aria-current="true"
+  >
+    Tüm Renkler
+  </a>
+  <a
+    routerLink="/cars/getcardetailsbycolorId/{{ color.id }}"
+    *ngFor="let color of colors"
+    class="list-group-item list-group-item-action active"
+    aria-current="true"
+  >
+    {{ color.name }}
+  </a>
+</div>

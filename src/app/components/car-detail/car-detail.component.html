@@ -1,0 +1,44 @@
+<div class="mb-3">
+  <label for="colorFilterText" class="form-label">Renge göre arabaları filtrele</label>
+  <input
+    [(ngModel)]="colorFilterText"
+    type="text"
+    class="form-control"
+    id="colorFilterText"
+    placeholder="renk giriniz"
+  />
+</div>
+<div class="mb-3">
+  <label for="brandFilterText" class="form-label">Markaya göre arabaları filtrele</label>
+  <input
+    [(ngModel)]="brandFilterText"
+    type="text"
+    class="form-control"
+    id="colorFilterText"
+    placeholder="marka giriniz"
+  />
+</div>
+
+<div
+  *ngFor="
+    let carDetail of carDetails
+      | brandFilterPipe: brandFilterText
+      | colorFilterPipe: colorFilterText
+  "
+  class="card"
+  style="width: 18rem"
+>
+  <img src="..." class="card-img-top" alt="..." />
+  <div class="card-body">
+    <h5 class="card-title">{{ carDetail.carDescription }}</h5>
+    <p class="card-text">
+      {{ carDetail.brandName }} {{ carDetail.colorName }}
+      {{ carDetail.dailyPrice }}
+    </p>
+    <a
+      routerLink="/cars/getcardetailsbyid/{{ carDetail.id }}"
+      class="btn btn-primary"
+      >Detay</a
+    >
+  </div>
+</div>
