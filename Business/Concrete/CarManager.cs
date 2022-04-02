@@ -45,7 +45,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarDeleted);
         }
 
-        [SecuredOperation("user")]
+        //[SecuredOperation("user")]
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
@@ -61,6 +61,26 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarDetailsGot);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandId(brandId), Messages.CarDetailsFilterByBrandId);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandIdAndColorId(int brandId, int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandIdAndColorId(brandId,colorId), Messages.CarDetailsFilterByBrandIdAndColorId);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColorId(colorId), Messages.CarDetailsFilterByColorId);
+        }
+
+        public IDataResult<CarDetailDto> GetCarDetailsById(int id)
+        {
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetailsById(id), Messages.CarDetailsGot);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)

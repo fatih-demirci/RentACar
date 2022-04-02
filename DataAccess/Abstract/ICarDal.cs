@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface ICarDal:IEntityRepository<Car>
+    public interface ICarDal : IEntityRepository<Car>
     {
-       List<CarDetailDto> GetCarDetails();
+        List<CarDetailDto> GetCarDetails();
+        CarDetailDto GetCarDetailsById(int id);
+        List<CarDetailDto> GetCarDetailsByBrandIdAndColorId(int brandId, int colorId);
+        List<CarDetailDto> GetCarDetailsByColorId(int colorId);
+        List<CarDetailDto> GetCarDetailsByBrandId(int brandId);
     }
 }

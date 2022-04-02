@@ -18,10 +18,13 @@ namespace Business.Constants
         public static string CarDeleted = "Araba silindi";
         public static string CarsListed = "Arabalar listelendi";
         public static string CarGot = "Araba getirildi";
-        public static string CarDetailsGot = "Araba detayları getirildi";
         public static string CarsGotByBrandId = "Arabalar markaya göre getirildi";
         public static string CarsGotByColorId = "Arabalar renge göre getirildi";
         public static string CarUpdated = "Araba bilgileri güncellendi";
+        public static string CarDetailsGot = "Araba detayları getirildi";
+        public static string CarDetailsFilterByBrandId ="Arabalar markaya göre listelendi";
+        public static string CarDetailsFilterByBrandIdAndColorId = "Arabalar marka ve renge göre listelendi";
+        public static string CarDetailsFilterByColorId = "Arabalar renge göre listelendi";
         public static string ColorAdded = "Renk eklendi";
         public static string ColorDeleted = "Renk silindi";
         public static string ColorsListed = "Renkler listelendi";
@@ -59,6 +62,6 @@ namespace Business.Constants
         public static string UserOperationClaimListed = "Kullanıcı rolleri listelendi";
         public static string UserOperationClaimGot = "Kullanıcı rolü Id'ye göre getirildi";
         public static string UserOperationClaimUpdated = "Kullanıcı rolü güncellendi";
-        
+
     }
 }
