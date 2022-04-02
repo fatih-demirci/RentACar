@@ -47,6 +47,14 @@ namespace Core.Utilities.Upload.Image
             return true;
         }
 
+        public Byte[] GetById(string path)
+        {
+            string imagePath = Path.Combine(_environment.ContentRootPath, "wwwroot", "Images" , path);
+            byte[] image = File.ReadAllBytes(imagePath);
+            
+            return image;
+        }
+
 
     }
 }

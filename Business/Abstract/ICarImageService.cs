@@ -13,9 +13,9 @@ namespace Business.Abstract
     public interface ICarImageService
     {
         IDataResult<List<CarImage>> GetAll();
-        IDataResult<CarImage> GetById(int id);
+        IDataResult<List<byte[]>> GetById(int carId, IHostEnvironment hostEnvironment);
         IResult Add(int carId, IHostEnvironment hostEnvironment, IFormFile formFile);
         IResult Update(int carImageId, IHostEnvironment hostEnvironment, IFormFile formFile);
-        IResult Delete(CarImage carImage);
+        IResult Delete(CarImage carImage, IHostEnvironment hostEnvironment);
     }
 }

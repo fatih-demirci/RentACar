@@ -70,11 +70,11 @@ namespace Business.Concrete
 
         }
 
-        public IResult Delete(CarImage carImage)
+        public IResult Delete(CarImage carImage, IHostEnvironment hostEnvironment)
         {
             _carImageDal.Delete(carImage);
             ImageUpload.Delete(carImage.ImagePath);
-            if (GetById(carImage.CarId).Data == null)
+            if (GetById(carImage.CarId, hostEnvironment).Data == null)
             {
                 Add(carImage.CarId, null, null);
             }
@@ -87,25 +87,33 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IDataResult<CarImage> GetById(int id)
+        public IDataResult<List<byte[]>> GetById(int carId, IHostEnvironment hostEnvironment)
         {
-            var result = _carImageDal.Get(ci => ci.Id == id);
-            if (result != null)
+            var carImages = _carImageDal.GetAll(ci => ci.CarId == carId);
+            List<byte[]> result = new List<byte[]>();
+            if (carImages != null)
             {
-                return new SuccessDataResult<CarImage>(result);
+                ImageUpload imageUpload = new ImageUpload(hostEnvironment);
+                foreach (var carImage in carImages)
+                {
+                    byte[] image = imageUpload.GetById(carImage.ImagePath);
+                    result.Add(image);
+                }
+                
+                return new SuccessDataResult<List<byte[]>>(result);
             }
-            return new ErrorDataResult<CarImage>();
+            return new ErrorDataResult<List<byte[]>>();
         }
 
         public IResult Update(int carImageId, IHostEnvironment hostEnvironment, IFormFile formFile)
         {
-            var result = GetById(carImageId);
-            if (!result.Success)
+            var result = _carImageDal.Get(ci => ci.Id == carImageId);
+            if (result==null)
             {
                 return new ErrorResult();
             }
-            Delete(result.Data);
-            Add(result.Data.CarId, hostEnvironment, formFile);
+            Delete(result,hostEnvironment);
+            Add(result.CarId, hostEnvironment, formFile);
             return new SuccessResult(Messages.CarImageUpdated);
         }
 
