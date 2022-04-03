@@ -1,44 +1,99 @@
-<div class="mb-3">
-  <label for="colorFilterText" class="form-label">Renge göre arabaları filtrele</label>
-  <input
-    [(ngModel)]="colorFilterText"
-    type="text"
-    class="form-control"
-    id="colorFilterText"
-    placeholder="renk giriniz"
-  />
-</div>
-<div class="mb-3">
-  <label for="brandFilterText" class="form-label">Markaya göre arabaları filtrele</label>
-  <input
-    [(ngModel)]="brandFilterText"
-    type="text"
-    class="form-control"
-    id="colorFilterText"
-    placeholder="marka giriniz"
-  />
+<div class="row align-items-end">
+  <div class="mb-3 col-md-2">
+    <label for="colorFilterText" class="form-label"
+      >Renge göre arabaları filtrele</label
+    >
+    <input
+      [(ngModel)]="colorFilterText"
+      type="text"
+      class="form-control"
+      id="colorFilterText"
+      placeholder="renk giriniz"
+    />
+  </div>
+
+  <div class="mb-3 col-md-2">
+    <label for="brandFilterText" class="form-label"
+      >Markaya göre arabaları filtrele</label
+    >
+    <input
+      [(ngModel)]="brandFilterText"
+      type="text"
+      class="form-control"
+      id="colorFilterText"
+      placeholder="marka giriniz"
+    />
+  </div>
+
+  <div class="mb-3 col-md-3">
+    <label for="brandFilterSelect" class="form-label"
+      >Markaya göre arabaları filtrele</label
+    >
+    <select
+      [(ngModel)]="brandFilterSelect"
+      class="form-select"
+      aria-label="Default select example"
+      id="brandFilterSelect"
+    >
+      <option [value]="0">Markalar</option>
+      <option [value]="brand.id" *ngFor="let brand of brands">
+        {{ brand.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3 col-md-3">
+    <label for="colorFilterSelect" class="form-label"
+      >Renge göre arabaları filtrele</label
+    >
+    <select
+      [(ngModel)]="colorFilterSelect"
+      class="form-select"
+      aria-label="Default select example"
+      id="colorFilterSelect"
+    >
+      <option [value]="0">Renkler</option>
+      <option [value]="color.id" *ngFor="let color of colors">
+        {{ color.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3 col-md-2">
+    <button
+      routerLink="/cars/color/{{ colorFilterSelect }}/brand/{{
+        brandFilterSelect
+      }}"
+      class="btn btn-primary"
+      type="button"
+    >
+      Filtrele
+    </button>
+  </div>
 </div>
 
-<div
-  *ngFor="
-    let carDetail of carDetails
-      | brandFilterPipe: brandFilterText
-      | colorFilterPipe: colorFilterText
-  "
-  class="card"
-  style="width: 18rem"
->
-  <img src="..." class="card-img-top" alt="..." />
-  <div class="card-body">
-    <h5 class="card-title">{{ carDetail.carDescription }}</h5>
-    <p class="card-text">
-      {{ carDetail.brandName }} {{ carDetail.colorName }}
-      {{ carDetail.dailyPrice }}
-    </p>
-    <a
-      routerLink="/cars/getcardetailsbyid/{{ carDetail.id }}"
-      class="btn btn-primary"
-      >Detay</a
-    >
+<div class="row">
+  <div
+    *ngFor="
+      let carDetail of carDetails
+        | brandFilterPipe: brandFilterText
+        | colorFilterPipe: colorFilterText
+    "
+    class="card mb-4 ms-md-4"
+    style="width: 18rem"
+  >
+    <img src="..." class="card-img-top" alt="..." />
+    <div class="card-body">
+      <h5 class="card-title">{{ carDetail.carDescription }}</h5>
+      <p class="card-text">
+        {{ carDetail.brandName }} {{ carDetail.colorName }}
+        {{ carDetail.dailyPrice }}
+      </p>
+      <a
+        routerLink="/cars/getcardetailsbyid/{{ carDetail.id }}"
+        class="btn btn-primary"
+        >Detay</a
+      >
+    </div>
   </div>
 </div>
