@@ -9,16 +9,16 @@ import { RentalService } from 'src/app/services/rental.service';
 })
 export class RentalComponent implements OnInit {
 
-  rentalDetails:RentalDetailDto[]=[]
+  rentalDetails: RentalDetailDto[] = []
 
-  constructor(private rentalService:RentalService) { }
+  constructor(private rentalService: RentalService) { }
 
   ngOnInit(): void {
-    this.GetRentalDetails();
+    this.getRentalDetails();
   }
 
-  GetRentalDetails(){
-    this.rentalService.GetRentalDetails().subscribe(response=>{
+  getRentalDetails() {
+    this.rentalService.getRentalDetails().subscribe(response => {
       this.rentalDetails = response.data
     })
   }
