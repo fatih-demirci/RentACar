@@ -43,7 +43,7 @@ namespace Business.Concrete
 
             if (carImages.Count == 1)
             {
-                if (carImages[0].ImagePath == "default_car")
+                if (carImages[0].ImagePath == "default_car.png")
                 {
                     _carImageDal.Delete(carImages[0]);
                 }
@@ -59,7 +59,7 @@ namespace Business.Concrete
             }
             else
             {
-                result = "default_car";
+                result = "default_car.png";
             }
 
             carImage.CarId = carId;
