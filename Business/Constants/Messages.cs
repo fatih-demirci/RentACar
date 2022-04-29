@@ -62,6 +62,6 @@ namespace Business.Constants
         public static string UserOperationClaimListed = "Kullanıcı rolleri listelendi";
         public static string UserOperationClaimGot = "Kullanıcı rolü Id'ye göre getirildi";
         public static string UserOperationClaimUpdated = "Kullanıcı rolü güncellendi";
-
+        public static string PayError = "Ödeme başarısız";
     }
 }

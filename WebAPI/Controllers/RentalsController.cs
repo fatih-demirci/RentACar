@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -53,14 +54,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(Rental rental)
+        public IActionResult Add([FromQuery] Rental rental, PaymentInformation paymentInformation )
         {
-            var result = _rentalService.Add(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = _rentalService.Add(rental,paymentInformation);
+            return Ok(result);
         }
 
         [HttpPost("Update")]

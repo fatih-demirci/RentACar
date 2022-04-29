@@ -4,6 +4,7 @@ using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Payment;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -45,6 +46,8 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<userOperationClaimManager>().As<IUserOperationClaimService>();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
+
+            builder.RegisterType<PaymentTestService>().As<IPaymentService>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
