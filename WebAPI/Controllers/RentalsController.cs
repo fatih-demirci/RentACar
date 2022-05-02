@@ -57,7 +57,12 @@ namespace WebAPI.Controllers
         public IActionResult Add([FromQuery] Rental rental, PaymentInformation paymentInformation )
         {
             var result = _rentalService.Add(rental,paymentInformation);
-            return Ok(result);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+            
         }
 
         [HttpPost("Update")]
