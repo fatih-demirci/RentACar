@@ -3,7 +3,6 @@ using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
 using Core.Utilities;
-using Core.Utilities.Date;
 using Core.Utilities.Payment;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -38,11 +37,11 @@ namespace Business.Concrete
                 rental.RentDate = DateTime.Now;
             }
             rental.RequiredReturnDate = rental.RentDate.AddDays(paymentInformation.Total / _carService.GetCarDetailsById(rental.CarId).Data.DailyPrice);
-            Console.WriteLine(rental.CarId);
-            if (_rentalDal.Get(r => r.CarId == rental.CarId && r.ReturnDate == DateTime.MinValue && (
+            
+            if (_rentalDal.GetAll(r => r.CarId == rental.CarId && r.ReturnDate == DateTime.MinValue && (
             (r.RentDate.CompareTo(rental.RentDate) <= 0 && r.RequiredReturnDate.CompareTo(rental.RentDate) >= 0) || (r.RentDate.CompareTo(rental.RequiredReturnDate) <= 0 && r.RequiredReturnDate.CompareTo(rental.RequiredReturnDate) >= 0)
         || ((rental.RentDate.CompareTo(r.RentDate) <= 0 && rental.RequiredReturnDate.CompareTo(r.RentDate) >= 0) || (rental.RentDate.CompareTo(r.RequiredReturnDate) <= 0 && rental.RequiredReturnDate.CompareTo(r.RequiredReturnDate) >= 0))
-                                                                                                    )) != null)
+                                                                                                    )).Count !=0)
             {
                 return new ErrorResult(Messages.RentalCarAlreadyRented);
             }
