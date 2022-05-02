@@ -15,76 +15,7 @@
 </ul>
 <div class="row align-items-end">
 
-  <div class="mb-2 col-md-4">
-    <label for="rentDayText" class="form-label">Kiralama süresi</label>
-    <input
-      [(ngModel)]="rentDay"
-      (change)="calculateTotal()"
-      type="text"
-      class="form-control"
-      id="rentDayText"
-      placeholder="kaç günlük kiralamak istediğinizi giriniz."
-    />
-  </div>
+  
+<app-rental [carDetailDto]="carDetailDto"></app-rental>
 
-  <div class="mb-2 col-md-4">
-    <label for="creditCardNumberText" class="form-label">Kredi kartı numarası</label>
-    <input
-      [(ngModel)]="paymentInformation.creditCardNumber"
-      type="text"
-      class="form-control"
-      id="rentDayText"
-      placeholder="kredi kartı numarası"
-    />
-  </div>
-
-  <div class="mb-2 col-md-4">
-    <label for="cvvText" class="form-label">cvv</label>
-    <input
-      [(ngModel)]="paymentInformation.cvv"
-      type="text"
-      class="form-control"
-      id="cvvText"
-      placeholder="cvv"
-    />
-  </div>
-
-  <div class="mb-2 col-md-4">
-    <label for="expiryDateText" class="form-label">Son kullanma tarihi</label>
-    <input
-      [(ngModel)]="paymentInformation.expiryDate"
-      type="text"
-      class="form-control"
-      id="expiryDateText"
-      placeholder="son kullanma tarihini giriniz"
-    />
-  </div>
-
-  <div class="mb-2 col-md-4">
-    <label for="nameText" class="form-label">Ad soyad</label>
-    <input
-      [(ngModel)]="paymentInformation.name"
-      type="text"
-      class="form-control"
-      id="nameText"
-      placeholder="ad soyad giriniz"
-    />
-  </div>
-
-  <div class="mb-2 col-md-4">
-    <label for="rentDateText" class="form-label">Kiralama tarihi seçiniz</label>
-    <input
-      [(ngModel)]="rentDate"
-      type="date"
-      class="form-control"
-      id="rentDateText"
-    />
-  </div>
-
-  <p>Ödenecek tutar = {{paymentInformation.total}}</p>
-
-  <div class="mb-2 col-md-1">
-    <button class="btn btn-primary" type="button" (click)="rentCar()">Kirala</button>
-  </div>
-<p *ngIf="rentalClicked">{{rentResult.message}}</p>
 </div>

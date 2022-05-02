@@ -1,1 +1,106 @@
-<p *ngFor="let rentalDetail of rentalDetails">{{rentalDetail.name}}</p>
+<div class="content">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="title">Aracı kirala</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="rentalAddForm">
+          <div class="mb-2 col-md-4">
+            <label for="rentDay" class="form-label">Kiralama süresi</label>
+            <div class="form-group">
+              <input
+                (change)="calculateTotal()"
+                type="text"
+                class="form-control"
+                id="rentDay"
+                formControlName="rentDay"
+                placeholder="kaç günlük kiralamak istediğinizi giriniz."
+              />
+            </div>
+          </div>
+
+          <div class="mb-2 col-md-4">
+            <label for="creditCardNumber" class="form-label"
+              >Kredi kartı numarası</label
+            >
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="creditCardNumber"
+                formControlName="creditCardNumber"
+                placeholder="kredi kartı numarası"
+              />
+            </div>
+          </div>
+
+          <div class="mb-2 col-md-4">
+            <label for="cvv" class="form-label">cvv</label>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="cvv"
+                formControlName="cvv"
+                placeholder="cvv"
+              />
+            </div>
+          </div>
+
+          <div class="mb-2 col-md-4">
+            <label for="expiryDate" class="form-label"
+              >Son kullanma tarihi</label
+            >
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="expiryDate"
+                formControlName="expiryDate"
+                placeholder="son kullanma tarihini giriniz"
+              />
+            </div>
+          </div>
+
+          <div class="mb-2 col-md-4">
+            <label for="name" class="form-label">Ad soyad</label>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                placeholder="ad soyad giriniz"
+              />
+            </div>
+          </div>
+
+          <div class="mb-2 col-md-4">
+            <label for="rentDate" class="form-label"
+              >Kiralama tarihi seçiniz</label
+            >
+            <div class="form-group">
+              <input
+                type="date"
+                class="form-control"
+                id="rentDate"
+                formControlName="rentDate"
+              />
+            </div>
+          </div>
+
+          <p>Ödenecek tutar = {{ paymentInformation.total }}</p>
+
+          <div class="mb-2 col-md-1">
+            <button class="btn btn-primary" type="button" (click)="rentCar()">
+              Kirala
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p *ngIf="rentalClicked">{{ rentResult.message }}</p>
