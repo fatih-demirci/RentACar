@@ -15,6 +15,7 @@ import { ColorService } from 'src/app/services/color.service';
 })
 export class CarDetailComponent implements OnInit {
 
+  carDetailsLoaded:boolean=false
   carDetails: CarDetailDto[] = []
   brands: Brand[] = []
   colors: Color[] = []
@@ -61,6 +62,7 @@ export class CarDetailComponent implements OnInit {
 
     this.carService.getCarDetails().subscribe(response => {
       this.carDetails = response.data
+      this.carDetailsLoaded=true
     })
   }
 
