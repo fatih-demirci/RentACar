@@ -1,0 +1,99 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-4">
+        <h5 class="title">Aracı Güncelle</h5>
+      </div>
+
+      <div class="col-md-8 d-flex justify-content-end">
+        <i routerLink="/cars/update" class="bi bi-arrow-left"></i>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="carUpdateForm">
+      <div class="mb-2">
+        <label for="brandId" class="form-label">Marka Seçiniz</label>
+        <div class="form-group">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="brandId"
+            formControlName="brandId"
+          >
+            <option [value]="0">Marka seçiniz</option>
+            <option [value]="brand.id" *ngFor="let brand of brands">
+              {{ brand.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="colorId" class="form-label">Renk Seçiniz</label>
+        <div class="form-group">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="colorId"
+            formControlName="colorId"
+          >
+            <option [value]="0">Renk seçiniz</option>
+            <option [value]="color.id" *ngFor="let color of colors">
+              {{ color.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="modelYear" class="form-label">Araba çıkış yılı</label>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="modelYear"
+            formControlName="modelYear"
+            placeholder="Yıl yazınız"
+          />
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="dailyPrice" class="form-label"
+          >Günlük kiralama bedeli</label
+        >
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="dailyPrice"
+            formControlName="dailyPrice"
+            placeholder="Fiyat giriniz"
+          />
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="description" class="form-label">Açıklama</label>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            formControlName="description"
+            placeholder="Açıklama giriniz"
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-end">
+        <div class="col-md-auto">
+          <button class="btn btn-primary" type="button" (click)="updateCar()">
+            Arabayı güncelle
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

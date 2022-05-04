@@ -1,0 +1,288 @@
+<div class="content">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Araç ekle</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="carAddForm">
+              <div class="mb-2">
+                <label for="brandId" class="form-label">Marka Seçiniz</label>
+                <div class="form-group">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    id="brandId"
+                    formControlName="brandId"
+                  >
+                    <option [value]="0">Marka seçiniz</option>
+                    <option
+                      selected
+                      [value]="brand.id"
+                      *ngFor="let brand of brands"
+                    >
+                      {{ brand.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label for="colorId" class="form-label">Renk Seçiniz</label>
+                <div class="form-group">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    id="colorId"
+                    formControlName="colorId"
+                  >
+                    <option [value]="0">Renk seçiniz</option>
+                    <option [value]="color.id" *ngFor="let color of colors">
+                      {{ color.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label for="modelYear" class="form-label"
+                  >Araba çıkış yılı</label
+                >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="modelYear"
+                    formControlName="modelYear"
+                    placeholder="Yıl yazınız"
+                  />
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label for="dailyPrice" class="form-label"
+                  >Günlük kiralama bedeli</label
+                >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="dailyPrice"
+                    formControlName="dailyPrice"
+                    placeholder="Fiyat giriniz"
+                  />
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label for="description" class="form-label">Açıklama</label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    formControlName="description"
+                    placeholder="Açıklama giriniz"
+                  />
+                </div>
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-md-auto">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="addCar()"
+                  >
+                    Arabayı ekle
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Marka</th>
+                <th scope="col">Renk</th>
+                <th scope="col">Araç çıkış yılı</th>
+                <th scope="col">Günlük kiralama bedeli</th>
+                <th scope="col">Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let car of cars"
+                routerLink="/cars/updateDetails/{{ car.id }}"
+              >
+                <th scope="row">{{ car.id }}</th>
+                <td>{{ car.brandName }}</td>
+                <td>{{ car.colorName }}</td>
+                <td>{{ car.modelYear }}</td>
+                <td>{{ car.dailyPrice }}</td>
+                <td>{{ car.carDescription }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Renk ekle</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="colorAddForm">
+              <div class="mb-2">
+                <label for="colorName" class="form-label"
+                  >Renk ismi giriniz</label
+                >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="colorName"
+                    formControlName="colorName"
+                    placeholder="Renk giriniz"
+                  />
+                </div>
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-md-auto">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="addColor()"
+                  >
+                    Rengi ekle
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <label for="colorsUpdate" class="form-label"
+            >Renk isimlerini güncelle</label
+          >
+          <div id="colorsUpdate" class="mb-2">
+            <div class="form-group">
+              <form>
+                <div *ngFor="let color of colorsUpdated" class="row mb-3">
+                  <div class="col col-md-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="colorName_{{ color.id }}"
+                      placeholder="Renk giriniz"
+                      [(ngModel)]="color.name"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      (click)="updateColor(color)"
+                    >
+                      Rengi güncelle
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Marka ekle</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="brandAddForm">
+              <div class="mb-2">
+                <label for="brandName" class="form-label"
+                  >Marka ismi giriniz</label
+                >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="brandName"
+                    formControlName="brandName"
+                    placeholder="Marka giriniz"
+                  />
+                </div>
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-md-auto">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="addBrand()"
+                  >
+                    Markayı ekle
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <label for="colorsUpdate" class="form-label"
+            >Marka isimlerini güncelle</label
+          >
+          <div id="brandsUpdate" class="mb-2">
+            <div class="form-group">
+              <form>
+                <div *ngFor="let brand of brandsUpdated" class="row mb-3">
+                  <div class="col col-md-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="colorName_{{ brand.id }}"
+                      placeholder="Renk giriniz"
+                      [(ngModel)]="brand.name"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      (click)="updateBrand(brand)"
+                    >
+                      Markayı güncelle
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
