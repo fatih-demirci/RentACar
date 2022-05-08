@@ -70,6 +70,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByColorId(colorId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
+      this.carDetailsLoaded=true
     })
   }
 
@@ -77,6 +78,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByBrandId(brandId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
+      this.carDetailsLoaded=true
     })
   }
 
@@ -84,6 +86,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByBrandIdAndColorId(brandId, colorId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
+      this.carDetailsLoaded=true
     })
   }
 

@@ -20,13 +20,13 @@ export class CarComponent implements OnInit {
   carDetailDto: CarDetailDto = { dailyPrice: 0, id: 0, brandName: "", carDescription: "", colorName: "", modelYear: 0 }
   carImages: any[] = []
   imagePaths: any[] = []
-  
+
 
   constructor(private carService: CarService,
     private carImageService: CarImageService,
     private rentalService: RentalService,
     private activatedRoot: ActivatedRoute,
-    private toastrService:ToastrService
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +53,6 @@ export class CarComponent implements OnInit {
 
   }
 
-  
+
 
 }

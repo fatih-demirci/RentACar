@@ -1,7 +1,7 @@
 <div class="list-group">
   <a
     routerLink=""
-    class="list-group-item list-group-item-action active"
+    class="list-group-item list-group-item-action"
     aria-current="true"
   >
     Tüm Markalar
@@ -9,7 +9,7 @@
   <a
   routerLink="/cars/color/{{ 0 }}/brand/{{ brand.id }}"
     *ngFor="let brand of brands"
-    class="list-group-item list-group-item-action active"
+    class="list-group-item list-group-item-action"
     aria-current="true"
   >
     {{ brand.name }}

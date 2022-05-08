@@ -1,15 +1,15 @@
 <div class="list-group">
   <a
     routerLink=""
-    class="list-group-item list-group-item-action active"
+    class="list-group-item list-group-item-action"
     aria-current="true"
   >
     Tüm Renkler
   </a>
   <a
-  routerLink="/cars/color/{{ color.id }}/brand/{{ 0 }}"
+    routerLink="/cars/color/{{ color.id }}/brand/{{ 0 }}"
     *ngFor="let color of colors"
-    class="list-group-item list-group-item-action active"
+    class="list-group-item list-group-item-action"
     aria-current="true"
   >
     {{ color.name }}
