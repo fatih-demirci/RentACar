@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
             return BadRequest(result.Message);
@@ -41,12 +41,6 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public ActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
-            if (!userExists.Success)
-            {
-                return BadRequest(userExists.Message);
-            }
-
             var registerResult = _authService.Register(userForRegisterDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
@@ -55,6 +49,52 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result.Message);
+        }
+
+        [HttpPost("RegisterForCustomer")]
+        public ActionResult RegisterForCustomer(CustomerForRegisterDto customerForRegisterDto)
+        {
+            var registerResult = _authService.RegisterForCustomer(customerForRegisterDto);
+            var result = _authService.CreateAccessToken(registerResult.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("IsAuthorizedAdmin")]
+        public ActionResult IsAuthorizedAdmin()
+        {
+            var result = _authService.IsAuthorizedAdmin();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("IsAuthorizedUser")]
+        public ActionResult IsAuthorizedUser()
+        {
+            var result = _authService.IsAuthorizedUser();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("IsAuthenticated")]
+        public ActionResult IsAuthenticated()
+        {
+            var result = _authService.IsAuthenticated();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

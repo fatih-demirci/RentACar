@@ -42,6 +42,17 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("GetUserDtoByUserId")]
+        public IActionResult GetUserDtoByUserId(int userId)
+        {
+            var result = _userService.GetUserDtoByUserId(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("Add")]
         public IActionResult Add(User user)
         {

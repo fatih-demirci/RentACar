@@ -1,10 +1,15 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
+using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
+using Core.Entities.DTOs;
 using Core.Utilities;
+using Core.Utilities.IoC;
 using DataAccess.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +23,15 @@ namespace Business.Concrete
     {
         IUserDal _userDal;
         IUserOperationClaimService _userOperationClaimService;
+        ICacheManager _cacheManager;
 
-        public UserManager(IUserDal userDal, IUserOperationClaimService userOperationClaimService)
+        public UserManager(IUserDal userDal,
+            IUserOperationClaimService userOperationClaimService)
+
         {
             _userDal = userDal;
             _userOperationClaimService = userOperationClaimService;
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         [TransactionScopeAspect]
@@ -51,7 +60,24 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<User> GetById(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), Messages.UserGotById);
+            var user = _userDal.Get(u => u.Id == id);
+            if (user == null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+            return new SuccessDataResult<User>(user, Messages.UserGotById);
+        }
+
+        [SecuredOperation("admin")]
+        public IDataResult<UserDto> GetUserDtoByUserId(int userId)
+        {
+            int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userDto = _userDal.GetUserDtoByUserId(cacheUserId);
+            if (userDto == null)
+            {
+                return new ErrorDataResult<UserDto>(Messages.UserNotFound);
+            }
+            return new SuccessDataResult<UserDto>(userDto, Messages.UserGotById);
         }
 
         [CacheAspect]
@@ -60,7 +86,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
 
-        [CacheAspect]
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));

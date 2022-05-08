@@ -39,6 +39,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
+        [SecuredOperation("admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car id)
         {
             _carDal.Delete(id);
@@ -93,6 +95,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarsGotByColorId);
         }
 
+        [SecuredOperation("admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);

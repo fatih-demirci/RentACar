@@ -1,9 +1,12 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
 using Core.Utilities;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.DTOs;
 
 namespace Business.Concrete
@@ -12,15 +15,23 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private ICustomerService _customerService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICustomerService customerService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _customerService = customerService;
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
+            var userExists = UserExists(userForRegisterDto.Email);
+            if (!userExists.Success)
+            {
+                return new ErrorDataResult<User>(userExists.Message);
+            }
+
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
             var user = new User
@@ -34,6 +45,19 @@ namespace Business.Concrete
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
+        }
+
+        [TransactionScopeAspect]
+        public IDataResult<User> RegisterForCustomer(CustomerForRegisterDto customerForRegisterDto)
+        {
+
+            var registerReult = Register(new UserForRegisterDto() { Email = customerForRegisterDto.Email, FirstName = customerForRegisterDto.FirstName, LastName = customerForRegisterDto.LastName, Password = customerForRegisterDto.Password });
+            if (!registerReult.Success)
+            {
+                return registerReult;
+            }
+            _customerService.Add(new Customer() { Id = 0, CompanyName = customerForRegisterDto.CompanyName, UserId = registerReult.Data.Id });
+            return new SuccessDataResult<User>(registerReult.Data, Messages.UserRegistered);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -66,6 +90,24 @@ namespace Business.Concrete
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims.Data);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+        }
+
+        [SecuredOperation("admin")]
+        public IResult IsAuthorizedAdmin()
+        {
+            return new SuccessResult();
+        }
+
+        [SecuredOperation("user")]
+        public IResult IsAuthorizedUser()
+        {
+            return new SuccessResult();
+        }
+
+        [SecuredOperation("admin,user")]
+        public IResult IsAuthenticated()
+        {
+            return new SuccessResult();
         }
     }
 }

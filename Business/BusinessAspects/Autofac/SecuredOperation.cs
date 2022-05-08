@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Business.Constants;
+using Core.CrossCuttingConrens.Caching;
 
 namespace Business.BusinessAspects.Autofac
 {
@@ -17,23 +18,35 @@ namespace Business.BusinessAspects.Autofac
     {
         private string[] _roles;
         private IHttpContextAccessor _httpContextAccessor;
+        private ICacheManager _cacheManager;
 
         public SecuredOperation(string roles)
         {
             _roles = roles.Split(',');
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+            var userId = _httpContextAccessor.HttpContext?.User.Claims
+                .FirstOrDefault(x => x.Type.EndsWith("nameidentifier"))?.Value;
+
+            if (userId == null)
+            {
+                throw new System.Security.SecurityException(Messages.AuthorizationDenied);
+            }
+
             foreach (var role in _roles)
             {
                 if (roleClaims.Contains(role))
                 {
+                    _cacheManager.Add(CacheKeys.UserIdForClaim, userId, 1);
                     return;
                 }
             }
+
             throw new Exception(Messages.AuthorizationDenied);
         }
     }

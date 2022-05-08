@@ -1,12 +1,16 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
+using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.IoC;
 using Core.Utilities.Payment;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,35 +24,63 @@ namespace Business.Concrete
         IRentalDal _rentalDal;
         IPaymentService _paymentService;
         ICarService _carService;
+        ICacheManager _cacheManager;
+        ICustomerService _customerService;
 
-        public RentalManager(IRentalDal rentalDal, IPaymentService paymentService, ICarService carService)
+        public RentalManager(IRentalDal rentalDal,
+            IPaymentService paymentService,
+            ICarService carService,
+            ICustomerService customerService)
         {
             _rentalDal = rentalDal;
             _paymentService = paymentService;
             _carService = carService;
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
+            _customerService = customerService;
         }
 
+
+        [SecuredOperation("admin,user")]
         [TransactionScopeAspect]
         public IResult Add(Rental rental, PaymentInformation paymentInformation)
         {
+
+            if (_cacheManager.Get(CacheKeys.UserIdForClaim) != null)
+            {
+                int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
+
+                var customerResult = _customerService.GetByUserId(cacheUserId);
+
+                if (!customerResult.Success)
+                {
+                    return new ErrorResult(Messages.UserNotFound);
+                }
+
+                rental.CustomerId = customerResult.Data.Id;
+            }
+            else
+            {
+                return new ErrorResult(Messages.AuthorizationDenied);
+            }
+
             rental.ReturnDate = DateTime.MinValue;
             if (rental.RentDate < DateTime.Now)
             {
                 rental.RentDate = DateTime.Now;
             }
             rental.RequiredReturnDate = rental.RentDate.AddDays(paymentInformation.Total / _carService.GetCarDetailsById(rental.CarId).Data.DailyPrice);
-            
+
             if (_rentalDal.GetAll(r => r.CarId == rental.CarId && r.ReturnDate == DateTime.MinValue && (
             (r.RentDate.CompareTo(rental.RentDate) <= 0 && r.RequiredReturnDate.CompareTo(rental.RentDate) >= 0) || (r.RentDate.CompareTo(rental.RequiredReturnDate) <= 0 && r.RequiredReturnDate.CompareTo(rental.RequiredReturnDate) >= 0)
         || ((rental.RentDate.CompareTo(r.RentDate) <= 0 && rental.RequiredReturnDate.CompareTo(r.RentDate) >= 0) || (rental.RentDate.CompareTo(r.RequiredReturnDate) <= 0 && rental.RequiredReturnDate.CompareTo(r.RequiredReturnDate) >= 0))
-                                                                                                    )).Count !=0)
+                                                                                                    )).Count != 0)
             {
                 return new ErrorResult(Messages.RentalCarAlreadyRented);
             }
             var paymentResult = _paymentService.Pay(paymentInformation);
             if (paymentResult.Success)
             {
-                
+
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.RentalAdded);
             }

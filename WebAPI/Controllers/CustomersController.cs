@@ -21,7 +21,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetAll")]
-        public IActionResult GetAll() {
+        public IActionResult GetAll()
+        {
             var result = _customerService.GetAll();
             if (result.Success)
             {
@@ -34,6 +35,17 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _customerService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("GetCustomerDtoByUserId")]
+        public IActionResult GetCustomerDtoByUserId(int userId)
+        {
+            var result = _customerService.GetCustomerDtoByUserId(userId);
             if (result.Success)
             {
                 return Ok(result);
