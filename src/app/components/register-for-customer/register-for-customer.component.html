@@ -1,0 +1,98 @@
+<body class="text-center">
+  <main class="form-signin">
+    <form [formGroup]="registerForCustomerForm">
+      <img
+        class="mb-4"
+        src="/docs/5.1/assets/brand/bootstrap-logo.svg"
+        alt=""
+        width="72"
+        height="57"
+      />
+      <h1 class="h3 mb-3 fw-normal">Üye ol</h1>
+
+      <div class="form-floating">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="name@example.com"
+        />
+        <label for="password">E-posta</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Password"
+          formControlName="password"
+        />
+        <label for="password">Parola</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          placeholder="Ad"
+          formControlName="firstName"
+        />
+        <label for="firstName">Ad</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          placeholder="Soyad"
+          formControlName="lastName"
+        />
+        <label for="lastName">Soyad</label>
+      </div>
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="companyName"
+          placeholder="Şirket adı"
+          formControlName="companyName"
+        />
+        <label for="companyName">Şirket adı</label>
+      </div>
+
+      <button class="w-100 btn btn-lg btn-primary" (click)="register()">
+        Üye ol
+      </button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+
+      <div
+        *ngIf="
+          registerForCustomerForm.invalid &&
+          (registerForCustomerForm.dirty || registerForCustomerForm.touched)
+        "
+        class="alert alert-danger"
+      >
+        <div
+          *ngIf="
+            registerForCustomerForm.controls['email'].invalid &&
+            (registerForCustomerForm.controls['email'].dirty ||
+              registerForCustomerForm.controls['email'].touched)
+          "
+          class="alert"
+        >
+          <div
+            *ngIf="registerForCustomerForm.controls['email'].errors?.['required']"
+          >
+            E-mail alanı zorunlu
+          </div>
+          <div
+            *ngIf="registerForCustomerForm.controls['email'].errors?.['email']"
+          >
+            E-mail formatında değil
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
+</body>

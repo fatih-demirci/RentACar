@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,9 +16,12 @@ import { ColorComponent } from './components/color/color.component';
 import { BrandFilterPipePipe } from './pipes/brand-filter-pipe.pipe';
 import { ColorFilterPipePipe } from './pipes/color-filter-pipe.pipe'
 
-import {ToastrModule} from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { CarUpdateComponent } from './components/car-update/car-update.component';
-import { CarUpdateDetailsComponent } from './components/car-update-details/car-update-details.component'
+import { CarUpdateDetailsComponent } from './components/car-update-details/car-update-details.component';
+import { LoginComponent } from './components/login/login.component'
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RegisterForCustomerComponent } from './components/register-for-customer/register-for-customer.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { CarUpdateDetailsComponent } from './components/car-update-details/car-u
     BrandFilterPipePipe,
     ColorFilterPipePipe,
     CarUpdateComponent,
-    CarUpdateDetailsComponent
+    CarUpdateDetailsComponent,
+    LoginComponent,
+    RegisterForCustomerComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -43,10 +49,16 @@ import { CarUpdateDetailsComponent } from './components/car-update-details/car-u
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass:"toast-bottom-right"
+      positionClass: "toast-bottom-right"
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
