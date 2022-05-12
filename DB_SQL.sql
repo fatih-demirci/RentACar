@@ -1,6 +1,6 @@
 USE [RentACar]
 GO
-/****** Object:  Table [dbo].[Brands]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[Brands]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[Brands](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CarImages]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[CarImages]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -30,7 +30,7 @@ CREATE TABLE [dbo].[CarImages](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Cars]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[Cars]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -48,7 +48,7 @@ CREATE TABLE [dbo].[Cars](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Colors]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[Colors]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -62,7 +62,24 @@ CREATE TABLE [dbo].[Colors](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Customers]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[CreditCards]    Script Date: 8.05.2022 20:40:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CreditCards](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CreditCardNumber] [varchar](16) NOT NULL,
+	[Cvv] [varchar](4) NOT NULL,
+	[ExpiryDate] [varchar](7) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Customers]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -71,13 +88,14 @@ CREATE TABLE [dbo].[Customers](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CompanyName] [varchar](50) NULL,
 	[UserId] [int] NULL,
+	[CreditCardId] [int] NULL,
  CONSTRAINT [PK_Customers] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[OperationClaims]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[OperationClaims]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -91,7 +109,7 @@ CREATE TABLE [dbo].[OperationClaims](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Rentals]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[Rentals]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -102,13 +120,14 @@ CREATE TABLE [dbo].[Rentals](
 	[CustomerId] [int] NULL,
 	[RentDate] [date] NULL,
 	[ReturnDate] [date] NULL,
+	[RequiredReturnDate] [date] NULL,
  CONSTRAINT [PK_Rentals] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserOperationClaims]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[UserOperationClaims]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -123,7 +142,7 @@ CREATE TABLE [dbo].[UserOperationClaims](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 14.03.2022 10:59:16 ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 8.05.2022 20:40:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

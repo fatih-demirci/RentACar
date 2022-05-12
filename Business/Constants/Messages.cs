@@ -22,7 +22,7 @@ namespace Business.Constants
         public static string CarsGotByColorId = "Arabalar renge göre getirildi";
         public static string CarUpdated = "Araba bilgileri güncellendi";
         public static string CarDetailsGot = "Araba detayları getirildi";
-        public static string CarDetailsFilterByBrandId ="Arabalar markaya göre listelendi";
+        public static string CarDetailsFilterByBrandId = "Arabalar markaya göre listelendi";
         public static string CarDetailsFilterByBrandIdAndColorId = "Arabalar marka ve renge göre listelendi";
         public static string CarDetailsFilterByColorId = "Arabalar renge göre listelendi";
         public static string ColorAdded = "Renk eklendi";
@@ -63,5 +63,11 @@ namespace Business.Constants
         public static string UserOperationClaimGot = "Kullanıcı rolü Id'ye göre getirildi";
         public static string UserOperationClaimUpdated = "Kullanıcı rolü güncellendi";
         public static string PayError = "Ödeme başarısız";
+        public static string CreditCardAdded = "Kredi kartı bilgileri kayıt edildi";
+        public static string CreditCardDeleted = "Kredi kartı bilgileri silindi";
+        public static string CreditCardsGot = "Kredi kartları getirildi";
+        public static string CreditCardGotById = "Kredi kartı id'ye göre getirildi";
+        public static string CreditCardUpdated = "Kredi kartı bilgileri güncellendi";
+        public static string CreditCardNotFound = "Kredi kartı bilgileri bulunamadı";
     }
 }
