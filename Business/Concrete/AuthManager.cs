@@ -2,12 +2,16 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
+using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Business.Concrete
 {
@@ -16,12 +20,14 @@ namespace Business.Concrete
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
         private ICustomerService _customerService;
+        private ICacheManager _cacheManager;
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICustomerService customerService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _customerService = customerService;
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
@@ -74,6 +80,38 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
+        }
+
+        [SecuredOperation("admin,user")]
+        public IResult ChangePassword(string oldPassword, string newPassword)
+        {
+            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userResult = _userService.GetById(cacheUserId);
+
+            if (!userResult.Success)
+            {
+                return new ErrorResult(userResult.Message);
+            }
+
+            if (!HashingHelper.VerifyPasswordHash(oldPassword, userResult.Data.PasswordHash, userResult.Data.PasswordSalt))
+            {
+                return new ErrorResult(Messages.PasswordError);
+            }
+
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
+
+            userResult.Data.PasswordHash = passwordHash;
+            userResult.Data.PasswordSalt = passwordSalt;
+
+            var userUpdateResult = _userService.Update(userResult.Data);
+
+            if (!userUpdateResult.Success)
+            {
+                return userUpdateResult;
+            }
+
+            return new SuccessResult(Messages.PasswordChanged);
         }
 
         public IResult UserExists(string email)

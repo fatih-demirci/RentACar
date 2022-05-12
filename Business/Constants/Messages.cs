@@ -69,5 +69,6 @@ namespace Business.Constants
         public static string CreditCardGotById = "Kredi kartı id'ye göre getirildi";
         public static string CreditCardUpdated = "Kredi kartı bilgileri güncellendi";
         public static string CreditCardNotFound = "Kredi kartı bilgileri bulunamadı";
+        public static string PasswordChanged = "Şifre değiştirildi";
     }
 }
