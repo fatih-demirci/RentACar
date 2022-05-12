@@ -41,6 +41,26 @@ namespace WebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer token\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                     {
+                       new OpenApiSecurityScheme
+                      {
+                      Reference = new OpenApiReference
+                      {
+                         Type = ReferenceType.SecurityScheme,
+                          Id = "Bearer"
+                      }
+                      },
+                     new string[] { }
+                   }
+                });
             });
 
             services.AddCors();
@@ -66,7 +86,7 @@ namespace WebAPI
                 new CoreModule()
             });
         }
-    
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
