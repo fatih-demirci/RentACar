@@ -59,6 +59,7 @@ namespace Business.Concrete
         }
 
         [SecuredOperation("user")]
+        [TransactionScopeAspect]
         public IResult Delete(CreditCard creditCard)
         {
             var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
