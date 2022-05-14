@@ -21,4 +21,12 @@ export class CustomerService {
   getCustomerDtoByUserId(userId: number) {
     return this.httpClient.get<EntityResponseModel<CustomerDto>>(this.apiUrl + "api/Customers/GetCustomerDtoByUserId?userId=" + userId)
   }
+
+  getByUserId() {
+    return this.httpClient.get<EntityResponseModel<Customer>>(this.apiUrl + "api/Customers/GetByUserId?userId=0")
+  }
+
+  update(customer: Customer) {
+    return this.httpClient.post<EntityResponseModel<Customer>>(this.apiUrl + "api/Customers/Update", customer)
+  }
 }

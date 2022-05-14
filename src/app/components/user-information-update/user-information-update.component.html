@@ -1,0 +1,124 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <h5 class="title">Bilgileri güncelle</h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="userUpdateForm">
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          formControlName="firstName"
+          placeholder="adınızı giriniz"
+        />
+        <label for="firstName" class="form-label">İsminiz</label>
+      </div>
+
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          formControlName="lastName"
+          placeholder="soyadınızı giriniz"
+        />
+        <label for="lastName" class="form-label">Soyadınız</label>
+      </div>
+
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="e-posta adresinizi giriniz"
+        />
+        <label for="email" class="form-label">E-posta adresiniz</label>
+      </div>
+
+      <div class="row justify-content-end">
+        <div class="col-md-auto">
+          <button class="btn btn-primary" type="button" (click)="updateUser()">
+            Bilgileri güncelle
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <h5 class="title">Şifre değiştir</h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="passwordUpdateForm">
+      <div class="form-floating mb-2">
+        <input
+          type="password"
+          class="form-control"
+          id="oldPassword"
+          formControlName="oldPassword"
+          placeholder="Mevcut şifrenizi giriniz"
+        />
+        <label for="oldPassword" class="form-label">Eski şifre</label>
+      </div>
+
+      <div class="form-floating mb-2">
+        <input
+          type="password"
+          class="form-control"
+          id="newPassword"
+          formControlName="newPassword"
+          placeholder="Yeni şifrenizi giriniz"
+        />
+        <label for="newPassword" class="form-label">Yeni şifre</label>
+      </div>
+
+      <div class="row justify-content-end">
+        <div class="col-md-auto">
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="updatePassword()"
+          >
+            Şifreyi değiştir
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="isCustomer" class="card">
+  <div class="card-header">
+    <h5 class="title">Şirket bilgileri güncelle</h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="customerUpdateForm">
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="companyName"
+          formControlName="companyName"
+          placeholder="Şirket adını giriniz"
+        />
+        <label for="companyName" class="form-label">Şirket adı</label>
+      </div>
+
+      <div class="row justify-content-end">
+        <div class="col-md-auto">
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="updateCustomer()"
+          >
+            Müşteri bilgilerini güncelle
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

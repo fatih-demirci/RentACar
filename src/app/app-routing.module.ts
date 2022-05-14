@@ -6,9 +6,11 @@ import { CarUpdateComponent } from './components/car-update/car-update.component
 import { CarComponent } from './components/car/car.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterForCustomerComponent } from './components/register-for-customer/register-for-customer.component';
+import { UserInformationUpdateComponent } from './components/user-information-update/user-information-update.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginAdminGuard } from './guards/login-admin.guard';
 import { LoginDoneGuard } from './guards/login-done.guard';
+import { LoginUserGuard } from './guards/login-user.guard';
 import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
@@ -18,7 +20,8 @@ const routes: Routes = [
   { path: "cars/update", pathMatch: "full", component: CarUpdateComponent, canActivate: [LoginAdminGuard, LoginGuard, AuthGuard] },
   { path: "cars/updateDetails/:carId", pathMatch: "full", component: CarUpdateDetailsComponent, canActivate: [LoginAdminGuard, LoginGuard, AuthGuard] },
   { path: "login", pathMatch: "full", component: LoginComponent, canActivate: [LoginDoneGuard, AuthGuard] },
-  { path: "registerCustomer", pathMatch: "full", component: RegisterForCustomerComponent, canActivate: [LoginDoneGuard, AuthGuard] }
+  { path: "registerCustomer", pathMatch: "full", component: RegisterForCustomerComponent, canActivate: [LoginDoneGuard, AuthGuard] },
+  { path: "user/update", pathMatch: "full", component: UserInformationUpdateComponent, canActivate: [AuthGuard, LoginGuard] }
 ];
 
 @NgModule({

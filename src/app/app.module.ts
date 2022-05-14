@@ -22,6 +22,7 @@ import { CarUpdateDetailsComponent } from './components/car-update-details/car-u
 import { LoginComponent } from './components/login/login.component'
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RegisterForCustomerComponent } from './components/register-for-customer/register-for-customer.component';
+import { UserInformationUpdateComponent } from './components/user-information-update/user-information-update.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RegisterForCustomerComponent } from './components/register-for-customer
     CarUpdateDetailsComponent,
     LoginComponent,
     RegisterForCustomerComponent,
+    UserInformationUpdateComponent,
 
   ],
   imports: [

@@ -17,15 +17,19 @@ export class AuthService {
   private apiUrl: string = "https://localhost:44307/"
 
   constructor(private httpClient: HttpClient,
-    private toastrService:ToastrService,
-    private localStorageService:LocalStorageService) { }
+    private toastrService: ToastrService,
+    private localStorageService: LocalStorageService) { }
 
   login(loginModel: LoginModel) {
     return this.httpClient.post<EntityResponseModel<TokenModel>>(this.apiUrl + "api/Auth/login", loginModel)
   }
 
-  registerForCustomer(registerForCustomerModel:RegisterForCustomerModel){
-    return this.httpClient.post<TokenModel>(this.apiUrl+"api/Auth/RegisterForCustomer",registerForCustomerModel)
+  registerForCustomer(registerForCustomerModel: RegisterForCustomerModel) {
+    return this.httpClient.post<TokenModel>(this.apiUrl + "api/Auth/RegisterForCustomer", registerForCustomerModel)
+  }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.httpClient.get<ResponseModel>(this.apiUrl + "api/Auth/ChangePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword)
   }
 
   haveToken() {
