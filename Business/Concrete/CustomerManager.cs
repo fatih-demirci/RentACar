@@ -58,14 +58,16 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(customer, Messages.CustomerGot);
         }
 
+        [SecuredOperation("user")]
         public IDataResult<Customer> GetByUserId(int userId)
         {
-            var userResult = _userService.GetById(userId);
+            var cacheId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userResult = _userService.GetById(cacheId);
             if (!userResult.Success)
             {
                 return new ErrorDataResult<Customer>(Messages.UserNotFound);
             }
-            var customer = _customerDal.Get(c => c.UserId == userId);
+            var customer = _customerDal.Get(c => c.UserId == cacheId);
             if (customer == null)
             {
                 return new ErrorDataResult<Customer>(Messages.UserNotFound);
@@ -85,8 +87,16 @@ namespace Business.Concrete
             return new SuccessDataResult<CustomerDto>(customerDto, Messages.CustomerGot);
         }
 
+        [SecuredOperation("user")]
         public IResult Update(Customer customer)
         {
+            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var customerResult = GetByUserId(cacheUserId);
+
+            customer.Id = customerResult.Data.Id;
+            customer.UserId = customerResult.Data.UserId;
+            customer.CreditCardId = customerResult.Data.CreditCardId;
+
             _customerDal.Update(customer);
             return new SuccessResult(Messages.CustomerUpdated);
         }

@@ -68,7 +68,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserGotById);
         }
 
-        [SecuredOperation("admin")]
+        [SecuredOperation("admin,user")]
         public IDataResult<UserDto> GetUserDtoByUserId(int userId)
         {
             int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
@@ -92,9 +92,31 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin,user")]
         public IResult Update(User user)
         {
+            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userResult = GetById(cacheUserId);
+
+            user.Id = cacheUserId;
+            user.Status = userResult.Data.Status;
+
             _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
+        }
+
+        [SecuredOperation("admin,user")]
+        [CacheRemoveAspect("IUserService.Get")]
+        public IResult UpdateUserDto(UserDto userDto)
+        {
+            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userResult = GetById(cacheUserId);
+
+            userResult.Data.FirstName = userDto.FirstName;
+            userResult.Data.LastName = userDto.LastName;
+            userResult.Data.Email = userDto.Email;
+
+            _userDal.Update(userResult.Data);
             return new SuccessResult(Messages.UserUpdated);
         }
     }

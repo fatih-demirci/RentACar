@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Core.Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -68,6 +69,17 @@ namespace WebAPI.Controllers
         public IActionResult Update(User user)
         {
             var result = _userService.Update(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("UpdateUserDto")]
+        public IActionResult UpdateUserDto(UserDto userDto)
+        {
+            var result = _userService.UpdateUserDto(userDto);
             if (result.Success)
             {
                 return Ok(result);
