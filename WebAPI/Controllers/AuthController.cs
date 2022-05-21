@@ -66,6 +66,10 @@ namespace WebAPI.Controllers
         public ActionResult RegisterForCustomer(CustomerForRegisterDto customerForRegisterDto)
         {
             var registerResult = _authService.RegisterForCustomer(customerForRegisterDto);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult);
+            }
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
