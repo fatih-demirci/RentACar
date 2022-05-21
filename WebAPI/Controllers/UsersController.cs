@@ -97,5 +97,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("EmailConfirmed")]
+        public IActionResult EmailConfirmed()
+        {
+            var result = _userService.EmailConfirmed();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

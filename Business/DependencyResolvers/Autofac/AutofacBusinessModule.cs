@@ -52,6 +52,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CreditCardManager>().As<ICreditCardService>();
             builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>();
 
+            builder.RegisterType<MailConfirmationManager>().As<IMailConfirmationService>();
+
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

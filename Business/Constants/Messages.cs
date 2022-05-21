@@ -70,5 +70,11 @@ namespace Business.Constants
         public static string CreditCardUpdated = "Kredi kartı bilgileri güncellendi";
         public static string CreditCardNotFound = "Kredi kartı bilgileri bulunamadı";
         public static string PasswordChanged = "Şifre değiştirildi";
+        public static string MailAlreadyConfirmed = "Mail adresi zaten onaylı";
+        public static string MailConfirmationSended = "Onay maili gönderildi";
+        public static string MailConfirmationNotFound = "Onay maili gönderilmemiş";
+        public static string ConfirmationNumberNotValid = "Onay numarası geçerli değil";
+        public static string MailConfirmed = "Mail adresi onaylandı";
+        public static string MailNotConfirmed = "Mail adresi onaylanmamış";
     }
 }

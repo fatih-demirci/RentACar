@@ -9,5 +9,6 @@ namespace Core.CrossCuttingConrens.Caching
     public static class CacheKeys
     {
         public static string UserIdForClaim = "UserIdForClaim";
+        public static string ConfirmationMail = "MailConfirmationCodeFor:";
     }
 }

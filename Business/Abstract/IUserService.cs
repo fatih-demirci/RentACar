@@ -20,5 +20,6 @@ namespace Business.Abstract
         IResult Update(User user);
         IResult UpdateUserDto(UserDto userDto);
         IResult Delete(User user);
+        IResult EmailConfirmed();
     }
 }

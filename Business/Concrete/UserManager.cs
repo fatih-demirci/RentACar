@@ -119,5 +119,18 @@ namespace Business.Concrete
             _userDal.Update(userResult.Data);
             return new SuccessResult(Messages.UserUpdated);
         }
+
+        [SecuredOperation("admin,user")]
+        public IResult EmailConfirmed()
+        {
+            var cacheUserID = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var userResult = GetById(cacheUserID);
+
+            if (userResult.Data.ConfirmedEmail)
+            {
+                return new SuccessResult(Messages.MailConfirmed);
+            }
+            return new ErrorResult(Messages.MailNotConfirmed);
+        }
     }
 }
