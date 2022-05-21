@@ -24,7 +24,7 @@ export class RegisterForCustomerComponent implements OnInit {
     private authService: AuthService,
     private toatrService: ToastrService,
     private router: Router,
-    private localStorageService:LocalStorageService) { }
+    private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
     this.createRegisterForCustomerForm();
@@ -52,7 +52,8 @@ export class RegisterForCustomerComponent implements OnInit {
           window.location.reload()
         },
         error: errorResponse => {
-          this.toatrService.error("Üyelik başarısız", "Hata")
+          console.log(errorResponse)
+          this.toatrService.error(errorResponse.error.message, "Hata")
         }
       })
 

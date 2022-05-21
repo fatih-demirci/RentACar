@@ -22,4 +22,8 @@ export class UserService {
     return this.httpClient.post<EntityResponseModel<UserDto>>(this.apiUrl + "api/Users/UpdateUserDto", userDto)
   }
 
+  emailConfirmed() {
+    return this.httpClient.get<ResponseModel>(this.apiUrl + "api/Users/EmailConfirmed")
+  }
+
 }

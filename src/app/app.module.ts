@@ -23,6 +23,7 @@ import { LoginComponent } from './components/login/login.component'
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RegisterForCustomerComponent } from './components/register-for-customer/register-for-customer.component';
 import { UserInformationUpdateComponent } from './components/user-information-update/user-information-update.component';
+import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UserInformationUpdateComponent } from './components/user-information-up
     LoginComponent,
     RegisterForCustomerComponent,
     UserInformationUpdateComponent,
+    ConfirmEmailComponent,
 
   ],
   imports: [

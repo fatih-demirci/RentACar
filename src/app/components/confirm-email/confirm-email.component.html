@@ -1,0 +1,39 @@
+<body class="text-center">
+  <main class="form-signin">
+    <form [formGroup]="confirmMailForm">
+      <img
+        class="mb-4"
+        src="/docs/5.1/assets/brand/bootstrap-logo.svg"
+        alt=""
+        width="72"
+        height="57"
+      />
+      <h1 class="h3 mb-3 fw-normal">E-mail onayla</h1>
+
+      <div class="row mb-3">
+        <div class="form-floating col-md-8">
+          <input
+            type="text"
+            class="form-control"
+            id="confirmationNumber"
+            formControlName="confirmationNumber"
+            placeholder="Onay kodu"
+          />
+          <label for="confirmationNumber">Onay kodu</label>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-sm btn-primary col-md-4"
+          (click)="sendConfirmationMail()"
+        >
+          Onay maili gönder
+        </button>
+      </div>
+
+      <button class="w-25 btn btn-lg btn-primary" (click)="confirmMail()">
+        Onayla
+      </button>
+    </form>
+  </main>
+</body>
