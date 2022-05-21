@@ -12,6 +12,6 @@ namespace Core.Entities.Concrete
         public string Cvv { get; set; }
         public string ExpiryDate { get; set; }
         public string Name { get; set; }
-        public int  Total { get; set; }
+        public int Total { get; set; }
     }
 }

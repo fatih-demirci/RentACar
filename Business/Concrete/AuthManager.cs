@@ -57,13 +57,13 @@ namespace Business.Concrete
         public IDataResult<User> RegisterForCustomer(CustomerForRegisterDto customerForRegisterDto)
         {
 
-            var registerReult = Register(new UserForRegisterDto() { Email = customerForRegisterDto.Email, FirstName = customerForRegisterDto.FirstName, LastName = customerForRegisterDto.LastName, Password = customerForRegisterDto.Password });
-            if (!registerReult.Success)
+            var registerResult = Register(new UserForRegisterDto() { Email = customerForRegisterDto.Email, FirstName = customerForRegisterDto.FirstName, LastName = customerForRegisterDto.LastName, Password = customerForRegisterDto.Password });
+            if (!registerResult.Success)
             {
-                return registerReult;
+                return registerResult;
             }
-            _customerService.Add(new Customer() { Id = 0, CompanyName = customerForRegisterDto.CompanyName, UserId = registerReult.Data.Id });
-            return new SuccessDataResult<User>(registerReult.Data, Messages.UserRegistered);
+            _customerService.Add(new Customer() { Id = 0, CompanyName = customerForRegisterDto.CompanyName, UserId = registerResult.Data.Id });
+            return new SuccessDataResult<User>(registerResult.Data, Messages.UserRegistered);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
