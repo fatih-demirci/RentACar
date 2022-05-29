@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -17,9 +18,9 @@ namespace Core.Extensions
             return claimsPrincipal?.Claims(ClaimTypes.Role);
         }
 
-        public static List<string> ClaimNameIdentifier(this ClaimsPrincipal claimsPrincipal)
+        public static int ClaimNameIdentifier(this ClaimsPrincipal claimsPrincipal)
         {
-            return claimsPrincipal?.Claims(ClaimTypes.NameIdentifier);
+            return Convert.ToInt32(claimsPrincipal?.Claims(ClaimTypes.NameIdentifier).SingleOrDefault());
         }
     }
 }
