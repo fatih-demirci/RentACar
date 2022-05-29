@@ -14,6 +14,7 @@ namespace Business.Abstract
     {
         IDataResult<List<CarImage>> GetAll();
         IDataResult<List<byte[]>> GetById(int carId, IHostEnvironment hostEnvironment);
+        IDataResult<byte[]> GetFirstImageById(int carId, IHostEnvironment hostEnvironment);
         IResult Add(int carId, IHostEnvironment hostEnvironment, IFormFile formFile);
         IResult Update(int carImageId, IHostEnvironment hostEnvironment, IFormFile formFile);
         IResult Delete(CarImage carImage, IHostEnvironment hostEnvironment);

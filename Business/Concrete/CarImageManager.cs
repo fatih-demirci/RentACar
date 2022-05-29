@@ -99,20 +99,27 @@ namespace Business.Concrete
                     byte[] image = imageUpload.GetById(carImage.ImagePath);
                     result.Add(image);
                 }
-                
+
                 return new SuccessDataResult<List<byte[]>>(result);
             }
             return new ErrorDataResult<List<byte[]>>();
         }
 
+        public IDataResult<byte[]> GetFirstImageById(int carId, IHostEnvironment hostEnvironment)
+        {
+            var carImage = _carImageDal.GetAll(ci => ci.CarId == carId).FirstOrDefault();
+            ImageUpload imageUpload = new ImageUpload(hostEnvironment);
+            return new SuccessDataResult<byte[]>(imageUpload.GetById(carImage.ImagePath));
+        }
+
         public IResult Update(int carImageId, IHostEnvironment hostEnvironment, IFormFile formFile)
         {
             var result = _carImageDal.Get(ci => ci.Id == carImageId);
-            if (result==null)
+            if (result == null)
             {
                 return new ErrorResult();
             }
-            Delete(result,hostEnvironment);
+            Delete(result, hostEnvironment);
             Add(result.CarId, hostEnvironment, formFile);
             return new SuccessResult(Messages.CarImageUpdated);
         }
