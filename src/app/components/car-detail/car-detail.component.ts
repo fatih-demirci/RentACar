@@ -5,6 +5,7 @@ import { Brand } from 'src/app/models/brand';
 import { CarDetailDto } from 'src/app/models/carDetailDto';
 import { Color } from 'src/app/models/color';
 import { BrandService } from 'src/app/services/brand.service';
+import { CarImageService } from 'src/app/services/car-image.service';
 import { CarService } from 'src/app/services/car.service';
 import { ColorService } from 'src/app/services/color.service';
 
@@ -15,7 +16,7 @@ import { ColorService } from 'src/app/services/color.service';
 })
 export class CarDetailComponent implements OnInit {
 
-  carDetailsLoaded:boolean=false
+  carDetailsLoaded: boolean = false
   carDetails: CarDetailDto[] = []
   brands: Brand[] = []
   colors: Color[] = []
@@ -25,12 +26,14 @@ export class CarDetailComponent implements OnInit {
   colorFilterText: string = ""
   brandFilterSelect: number = 0
   colorFilterSelect: number = 0
+  carImages: Map<number, number[]> = new Map<number, number[]>()
 
   constructor(private carService: CarService,
     private brandService: BrandService,
     private colorService: ColorService,
     private activatedRoute: ActivatedRoute,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private carImageService: CarImageService
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +65,10 @@ export class CarDetailComponent implements OnInit {
 
     this.carService.getCarDetails().subscribe(response => {
       this.carDetails = response.data
-      this.carDetailsLoaded=true
+      this.carDetailsLoaded = true
+      this.carDetails.forEach(car => {
+        this.getFirstImageById(car.id)
+      });
     })
   }
 
@@ -70,7 +76,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByColorId(colorId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
-      this.carDetailsLoaded=true
+      this.carDetailsLoaded = true
     })
   }
 
@@ -78,7 +84,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByBrandId(brandId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
-      this.carDetailsLoaded=true
+      this.carDetailsLoaded = true
     })
   }
 
@@ -86,7 +92,7 @@ export class CarDetailComponent implements OnInit {
     this.carService.GetCarDetailsByBrandIdAndColorId(brandId, colorId).subscribe(response => {
       this.carDetails = response.data
       this.toastrService.success(response.message)
-      this.carDetailsLoaded=true
+      this.carDetailsLoaded = true
     })
   }
 
@@ -102,4 +108,20 @@ export class CarDetailComponent implements OnInit {
     })
   }
 
+  getFirstImageById(id: number) {
+    return this.carImageService.getFirstImageById(id).subscribe({
+      next: response => {
+        this.carImages.set(id, response.data)
+      },
+      error: errorResponse => { console.log(errorResponse) }
+    })
+  }
+
+  getCarImage(id: number) {
+    let imageByteArray = this.carImages.get(id)
+    if (imageByteArray) {
+      return 'data:image/png;base64,' + this.carImages.get(id)!
+    }
+    return ''
+  }
 }
