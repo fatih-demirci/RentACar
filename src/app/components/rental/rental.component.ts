@@ -32,7 +32,6 @@ export class RentalComponent implements OnInit {
   }
   creditCard: CreditCard = { creditCardNumber: "", cvv: "", expiryDate: "", id: 0, name: "" }
   rentalAddForm: FormGroup = this.formBuilder.group({})
-  saveCreditCard: boolean = false
   date: Date = new Date()
 
   constructor(private rentalService: RentalService,
@@ -108,8 +107,12 @@ export class RentalComponent implements OnInit {
       next: response => {
         this.rentResult = response
         this.toastrService.success(this.rentResult.message, "Kiralama başarılı")
-        let newCreditCard: CreditCard = { creditCardNumber: this.paymentInformation.creditCardNumber, cvv: this.paymentInformation.cvv, expiryDate: this.paymentInformation.expiryDate, name: this.paymentInformation.name, id: 0 }
-        this.addCreditCard(newCreditCard)
+        console.log(this.rentalAddForm.value["saveCreditCard"])
+        if (this.rentalAddForm.value["saveCreditCard"]) {
+          let newCreditCard: CreditCard = { creditCardNumber: this.paymentInformation.creditCardNumber, cvv: this.paymentInformation.cvv, expiryDate: this.paymentInformation.expiryDate, name: this.paymentInformation.name, id: 0 }
+          this.addCreditCard(newCreditCard)
+        }
+
       },
       error: errorResponse => {
         this.rentResult.message = errorResponse.error.message
