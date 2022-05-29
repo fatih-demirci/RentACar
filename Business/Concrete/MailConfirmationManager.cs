@@ -4,6 +4,7 @@ using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
 using Core.CrossCuttingConrens.Caching;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using Core.Utilities.Mail;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ namespace Business.Concrete
         IUserService _userService;
         IMailService _mailService;
 
-        public MailConfirmationManager(ICacheManager cacheManager, IUserService userService,IMailService mailService)
+        public MailConfirmationManager(ICacheManager cacheManager, IUserService userService, IMailService mailService)
         {
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
             _userService = userService;
@@ -32,7 +33,7 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult SendConfirmationMail()
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var userResult = _userService.GetById(cacheUserId);
             if (!userResult.Success)
             {
@@ -51,7 +52,7 @@ namespace Business.Concrete
             var confirmationNumber = random.Next(100000, 999999).ToString();
             emailMessage.Content = confirmationNumber;
             emailMessage.Subject = "Email Confirmation mail for rent a car";
-            _cacheManager.Add((CacheKeys.ConfirmationMail + userResult.Data.Id.ToString()), confirmationNumber,30);
+            _cacheManager.Add((CacheKeys.ConfirmationMail + userResult.Data.Id.ToString()), confirmationNumber, 30);
             _mailService.Send(emailMessage);
             return new SuccessResult(Messages.MailConfirmationSended);
         }
@@ -59,7 +60,7 @@ namespace Business.Concrete
         [SecuredOperation("admin,user")]
         public IResult ConfirmMail(string number)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var userResult = _userService.GetById(cacheUserId);
             if (!userResult.Success)
             {
@@ -70,14 +71,14 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.MailAlreadyConfirmed);
             }
             string confirmationNumber = _cacheManager.Get(CacheKeys.ConfirmationMail + userResult.Data.Id).ToString();
-            if (confirmationNumber.Length<1)
+            if (confirmationNumber.Length < 1)
             {
                 return new ErrorResult(Messages.MailConfirmationNotFound);
             }
             if (number.Equals(confirmationNumber))
             {
                 userResult.Data.ConfirmedEmail = true;
-                var userUpdateResult =_userService.Update(userResult.Data);
+                var userUpdateResult = _userService.Update(userResult.Data);
                 if (!userUpdateResult.Success)
                 {
                     return userUpdateResult;

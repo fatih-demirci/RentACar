@@ -7,6 +7,7 @@ using Core.Aspects.Autofac.Validation.FluentValidation;
 using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using DataAccess.Abstract;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,14 +23,12 @@ namespace Business.Concrete
     {
         private ICreditCardDal _creditCardDal;
         private ICustomerService _customerService;
-        private ICacheManager _cacheManager;
 
         public CreditCardManager(ICreditCardDal creditCardDal,
             ICustomerService customerService)
         {
             _creditCardDal = creditCardDal;
             _customerService = customerService;
-            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         [ValidationAspect(typeof(CreditCardValidator))]
@@ -37,16 +36,18 @@ namespace Business.Concrete
         [SecuredOperation("user")]
         public IResult Add(CreditCard creditCard, int customerId)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var customerResult = _customerService.GetByUserId(cacheUserId);
             if (!customerResult.Success)
             {
                 return customerResult;
             }
-            if (customerResult.Data.CreditCardId!=0)
+
+            creditCard.Id = customerResult.Data.CreditCardId;
+
+            if (customerResult.Data.CreditCardId != 0)
             {
-                var creditCardResult = GetByUserId(cacheUserId);
-                Delete(creditCardResult.Data);
+                return Update(creditCard);
             }
             _creditCardDal.Add(creditCard);
             customerResult.Data.CreditCardId = creditCard.Id;
@@ -55,6 +56,7 @@ namespace Business.Concrete
             {
                 return customerUpdateResult;
             }
+
             return new SuccessResult(Messages.CreditCardAdded);
         }
 
@@ -62,7 +64,7 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult Delete(CreditCard creditCard)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             _creditCardDal.Delete(creditCard);
             var customerResult = _customerService.GetByUserId(cacheUserId);
             customerResult.Data.CreditCardId = 0;
@@ -76,9 +78,20 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CreditCard>>(result, Messages.CreditCardsGot);
         }
 
+        [SecuredOperation("user")]
         public IDataResult<CreditCard> GetById(int id)
         {
-            var result = _creditCardDal.Get(c => c.Id == id);
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
+            var customerResult = _customerService.GetByUserId(cacheUserId);
+            if (!customerResult.Success)
+            {
+                return new ErrorDataResult<CreditCard>(customerResult.Message);
+            }
+            var result = _creditCardDal.Get(c => c.Id == customerResult.Data.CreditCardId);
+            if (result == null)
+            {
+                return new ErrorDataResult<CreditCard>(Messages.CreditCardNotFound);
+            }
             return new SuccessDataResult<CreditCard>(result, Messages.CreditCardGotById);
         }
 
@@ -86,7 +99,7 @@ namespace Business.Concrete
         public IDataResult<CreditCard> GetByUserId(int userId)
         {
 
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var customerResult = _customerService.GetByUserId(cacheUserId);
             if (!customerResult.Success)
             {
@@ -104,10 +117,24 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("user")]
         public IResult Update(CreditCard creditCard)
         {
-            _creditCardDal.Update(creditCard);
-            return new SuccessResult(Messages.CreditCardUpdated);
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
+            var customerResult = _customerService.GetByUserId(cacheUserId);
+
+            if (!customerResult.Success)
+            {
+                return new ErrorResult(customerResult.Message);
+            }
+
+            if (creditCard.Id == customerResult.Data.CreditCardId)
+            {
+                _creditCardDal.Update(creditCard);
+                return new SuccessResult(Messages.CreditCardUpdated);
+            }
+
+            return new ErrorResult(Messages.AuthorizationDenied);
         }
     }
 }

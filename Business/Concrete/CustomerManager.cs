@@ -4,6 +4,7 @@ using Business.Constants;
 using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,14 +22,12 @@ namespace Business.Concrete
     {
         ICustomerDal _customerDal;
         IUserService _userService;
-        ICacheManager _cacheManager;
 
         public CustomerManager(ICustomerDal customerDal,
             IUserService userService)
         {
             _customerDal = customerDal;
             _userService = userService;
-            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         public IResult Add(Customer customer)
@@ -61,7 +60,7 @@ namespace Business.Concrete
         [SecuredOperation("user")]
         public IDataResult<Customer> GetByUserId(int userId)
         {
-            var cacheId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheId = HttpContextAccessorManager.GetUserId();
             var userResult = _userService.GetById(cacheId);
             if (!userResult.Success)
             {
@@ -78,7 +77,7 @@ namespace Business.Concrete
         [SecuredOperation("user")]
         public IDataResult<CustomerDto> GetCustomerDtoByUserId(int userId)
         {
-            int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
+            int cacheUserId = HttpContextAccessorManager.GetUserId();
             var customerDto = _customerDal.GetCustomerDtoByUserId(cacheUserId);
             if (customerDto == null)
             {
@@ -90,7 +89,7 @@ namespace Business.Concrete
         [SecuredOperation("user")]
         public IResult Update(Customer customer)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var customerResult = GetByUserId(cacheUserId);
 
             customer.Id = customerResult.Data.Id;

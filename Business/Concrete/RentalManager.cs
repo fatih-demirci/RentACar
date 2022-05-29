@@ -5,6 +5,7 @@ using Core.Aspects.Autofac.Transaction;
 using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using Core.Utilities.Payment;
 using DataAccess.Abstract;
@@ -24,7 +25,6 @@ namespace Business.Concrete
         IRentalDal _rentalDal;
         IPaymentService _paymentService;
         ICarService _carService;
-        ICacheManager _cacheManager;
         ICustomerService _customerService;
 
         public RentalManager(IRentalDal rentalDal,
@@ -35,7 +35,6 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
             _paymentService = paymentService;
             _carService = carService;
-            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
             _customerService = customerService;
         }
 
@@ -45,23 +44,16 @@ namespace Business.Concrete
         public IResult Add(Rental rental, PaymentInformation paymentInformation)
         {
 
-            if (_cacheManager.Get(CacheKeys.UserIdForClaim) != null)
+            int cacheUserId = HttpContextAccessorManager.GetUserId();
+
+            var customerResult = _customerService.GetByUserId(cacheUserId);
+
+            if (!customerResult.Success)
             {
-                int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
-
-                var customerResult = _customerService.GetByUserId(cacheUserId);
-
-                if (!customerResult.Success)
-                {
-                    return new ErrorResult(Messages.UserNotFound);
-                }
-
-                rental.CustomerId = customerResult.Data.Id;
+                return new ErrorResult(Messages.UserNotFound);
             }
-            else
-            {
-                return new ErrorResult(Messages.AuthorizationDenied);
-            }
+
+            rental.CustomerId = customerResult.Data.Id;
 
             rental.ReturnDate = DateTime.MinValue;
             if (rental.RentDate < DateTime.Now)

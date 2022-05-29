@@ -42,7 +42,6 @@ namespace Business.BusinessAspects.Autofac
             {
                 if (roleClaims.Contains(role))
                 {
-                    _cacheManager.Add(CacheKeys.UserIdForClaim, userId, 1);
                     return;
                 }
             }

@@ -7,6 +7,7 @@ using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using DataAccess.Abstract;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,15 +24,12 @@ namespace Business.Concrete
     {
         IUserDal _userDal;
         IUserOperationClaimService _userOperationClaimService;
-        ICacheManager _cacheManager;
 
         public UserManager(IUserDal userDal,
             IUserOperationClaimService userOperationClaimService)
-
         {
             _userDal = userDal;
             _userOperationClaimService = userOperationClaimService;
-            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         [TransactionScopeAspect]
@@ -71,7 +69,7 @@ namespace Business.Concrete
         [SecuredOperation("admin,user")]
         public IDataResult<UserDto> GetUserDtoByUserId(int userId)
         {
-            int cacheUserId = Int32.Parse((string)_cacheManager.Get(CacheKeys.UserIdForClaim));
+            int cacheUserId = HttpContextAccessorManager.GetUserId();
             var userDto = _userDal.GetUserDtoByUserId(cacheUserId);
             if (userDto == null)
             {
@@ -95,7 +93,7 @@ namespace Business.Concrete
         [SecuredOperation("admin,user")]
         public IResult Update(User user)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var userResult = GetById(cacheUserId);
 
             user.Id = cacheUserId;
@@ -109,7 +107,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IUserService.Get")]
         public IResult UpdateUserDto(UserDto userDto)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var userResult = GetById(cacheUserId);
 
             userResult.Data.FirstName = userDto.FirstName;
@@ -123,7 +121,7 @@ namespace Business.Concrete
         [SecuredOperation("admin,user")]
         public IResult EmailConfirmed()
         {
-            var cacheUserID = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserID = HttpContextAccessorManager.GetUserId();
             var userResult = GetById(cacheUserID);
 
             if (userResult.Data.ConfirmedEmail)

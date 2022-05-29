@@ -5,6 +5,7 @@ using Core.Aspects.Autofac.Transaction;
 using Core.CrossCuttingConrens.Caching;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.Business;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
@@ -85,7 +86,7 @@ namespace Business.Concrete
         [SecuredOperation("admin,user")]
         public IResult ChangePassword(string oldPassword, string newPassword)
         {
-            var cacheUserId = Convert.ToInt32(_cacheManager.Get(CacheKeys.UserIdForClaim));
+            var cacheUserId = HttpContextAccessorManager.GetUserId();
             var userResult = _userService.GetById(cacheUserId);
 
             if (!userResult.Success)
