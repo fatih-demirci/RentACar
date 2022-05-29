@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet("ChangePassword")]
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
                 return Ok(result.Data);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("RegisterForCustomer")]
@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
                 return Ok(result.Data);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet("IsAuthorizedAdmin")]
